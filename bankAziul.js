@@ -3,8 +3,8 @@ class Bank {
         this.accounts = []
     }
 
-    _validateAccountType(account) {
-        if (account.accountType !== 'Gold' && account.accountType !== 'Silver') {
+    _validateAccountType(accountType) {
+        if (accountType !== 'Gold' && accountType !== 'Silver') {
             throw new Error('Tipo de conta inexistente. Por favor, insira uma opção válida.')
         }
     }
@@ -67,9 +67,8 @@ class Bank {
 
     createAccount(account) {
         try {
-            this._validateCpf()
-            this._validadeAccount()
-            this._cpfExist()
+            this._validateCpf(account.cpf)
+            this._validateAccountType(account.accountType)
             if (this._cpfSearch(account.cpf)) {
                 throw new Error('O CPF informado já está cadastrado no banco de dados.')
             }
@@ -135,10 +134,9 @@ class Bank {
         }
     }
 
-    newBalance(cpf, balance, accountType, valueAdd) {
+    newBalance(cpf, accountType, valueAdd) {
         try {
             this._validateCpf(cpf)
-            this._validateSaldo(balance)
             if (!this._cpfSearch(cpf)) {
                 throw new Error('CPF não cadastrado no banco de dados.')
             }
@@ -190,3 +188,10 @@ class Bank {
         return this.accounts.filter(account => account.cpf !== cpf)
     }
 }
+
+const testando = new Bank()
+testando.createAccount({ accountType: 'Gold', name: 'Chloe', cpf: 13564899587 })
+console.log(testando)
+
+// const testando2 = new Bank()
+// console.log(testando2._validateCpf(11111111111))
