@@ -188,10 +188,3 @@ class Bank {
         return this.accounts.filter(account => account.cpf !== cpf)
     }
 }
-
-const testando = new Bank()
-testando.createAccount({ accountType: 'Gold', name: 'Chloe', cpf: 13564899587 })
-console.log(testando)
-
-// const testando2 = new Bank()
-// console.log(testando2._validateCpf(11111111111))
