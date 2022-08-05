@@ -45,13 +45,6 @@ class Bank {
         }
     }
 
-    _getDate() {
-        const date = Date.now()
-        let dateAtual = new Date(date)
-        let lastMovimentationDate = dateAtual.toUTCString()
-        return lastMovimentationDate
-    }
-
     _doTransference(cpfOrigem, cpfDestino, valueTransf) {
         let clientOrigem = accounts.find(item => {
             return item.cpf === cpfOrigem
@@ -63,6 +56,13 @@ class Bank {
 
         clientOrigem.balance -= valueTransf
         clientDestino.balance += valueTransf
+    }
+
+    _getDate() {
+        const date = Date.now()
+        let dateAtual = new Date(date)
+        let lastMovimentationDate = dateAtual.toUTCString()
+        return lastMovimentationDate
     }
 
     createAccount(account) {
@@ -106,7 +106,7 @@ class Bank {
         this._validateAccountType
 
         if (accountType === 'Silver') {
-            const DISCOUNT_SILVER = (5 / 100)
+            const DISCOUNT_SILVER = (2 / 100)
             let discount = DISCOUNT_SILVER * balance
             return balance - discount
         }
@@ -159,23 +159,21 @@ class Bank {
                 } catch (error) {
                     console.log(error.message)
                 }
-
-                if (accountType === 'Gold') {
-                    const maxAddSaldo = 10000
-                    try {
-                        if (valueAdd <= maxAddSaldo) {
-                            client = accounts.map(item => {
-                                if (item.cpf === cpf) {
-                                    return { ...item, balance: item.balance + valueAdd }
-                                }
-                                return item
-                            })
-                        } else {
-                            throw new Error("Valor da operação excedido.\nLimite por operação: R$10.000,00")
-                        }
-                    } catch (error) {
-                        console.log(error.message)
+            } if (accountType === 'Gold') {
+                const maxAddSaldo = 10000
+                try {
+                    if (valueAdd <= maxAddSaldo) {
+                        client = accounts.map(item => {
+                            if (item.cpf === cpf) {
+                                return { ...item, balance: item.balance + valueAdd }
+                            }
+                            return item
+                        })
+                    } else {
+                        throw new Error("Valor da operação excedido.\nLimite por operação: R$10.000,00")
                     }
+                } catch (error) {
+                    console.log(error.message)
                 }
             }
         } catch (error) {
